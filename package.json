@@ -1,0 +1,39 @@
+{
+  "name": "kadr-employee-archive-desktop",
+  "productName": "Кадр — архив сотрудников",
+  "version": "1.0.0",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "publish": "electron-builder --win nsis --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.9"
+  },
+  "devDependencies": {
+    "electron": "43.4.1",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "ru.buhburo.kadr",
+    "productName": "Кадр — архив сотрудников",
+    "files": ["main.cjs", "package.json"],
+    "win": {
+      "target": [{"target": "nsis", "arch": ["x64"]}],
+      "artifactName": "Kadr-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Кадр — архив сотрудников"
+    },
+    "publish": [{
+      "provider": "github",
+      "owner": "w5qvft-maker",
+      "repo": "kadr-employee-archive-updates",
+      "releaseType": "release"
+    }]
+  }
+}
