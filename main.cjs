@@ -2,7 +2,6 @@ const { app, BrowserWindow, dialog, shell } = require("electron");
 const { autoUpdater } = require("electron-updater");
 
 let mainWindow;
-let updateDialogOpen = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -26,28 +25,24 @@ function createWindow() {
   mainWindow.loadFile(require("path").join(__dirname, "renderer", "desktop", "index.html"));
 }
 
-async function offerUpdate(info) {
-  if (!mainWindow || updateDialogOpen) return;
-  updateDialogOpen = true;
-  const answer = await dialog.showMessageBox(mainWindow, {
+async function showDownloadingUpdate(info) {
+  if (!mainWindow) return;
+  await dialog.showMessageBox(mainWindow, {
     type: "info",
     title: "Доступно обновление",
     message: `Доступна новая версия ${info.version}`,
-    detail: "Скачать обновление сейчас?",
-    buttons: ["Скачать", "Позже"],
+    detail: "Обновление уже скачивается автоматически. Программу можно продолжать использовать.",
+    buttons: ["Понятно"],
     defaultId: 0,
-    cancelId: 1,
     noLink: true
   });
-  updateDialogOpen = false;
-  if (answer.response === 0) autoUpdater.downloadUpdate();
 }
 
 function configureUpdates() {
   if (!app.isPackaged) return;
-  autoUpdater.autoDownload = false;
+  autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;
-  autoUpdater.on("update-available", offerUpdate);
+  autoUpdater.on("update-available", showDownloadingUpdate);
   autoUpdater.on("update-downloaded", async (info) => {
     const answer = await dialog.showMessageBox(mainWindow, {
       type: "info",
@@ -62,7 +57,7 @@ function configureUpdates() {
   });
   autoUpdater.on("error", console.error);
   const check = () => autoUpdater.checkForUpdates().catch(console.error);
-  setTimeout(check, 5000);
+  check();
   setInterval(check, 30 * 60 * 1000);
 }
 
