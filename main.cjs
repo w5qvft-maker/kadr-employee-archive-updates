@@ -1,7 +1,6 @@
 const { app, BrowserWindow, dialog, shell } = require("electron");
 const { autoUpdater } = require("electron-updater");
 
-const APP_URL = "https://kadr-employee-archive.w5qvft.chatgpt.site/";
 let mainWindow;
 let updateDialogOpen = false;
 
@@ -24,7 +23,7 @@ function createWindow() {
     shell.openExternal(url);
     return { action: "deny" };
   });
-  mainWindow.loadURL(APP_URL);
+  mainWindow.loadFile(require("path").join(__dirname, "renderer", "desktop", "index.html"));
 }
 
 async function offerUpdate(info) {
