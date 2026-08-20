@@ -1,7 +1,7 @@
 {
   "name": "kadr-employee-archive-desktop",
   "productName": "Кадр — архив сотрудников",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "main": "main.cjs",
   "scripts": {
@@ -17,7 +17,7 @@
   "build": {
     "appId": "ru.buhburo.kadr",
     "productName": "Кадр — архив сотрудников",
-    "files": ["main.cjs", "package.json"],
+    "files": ["main.cjs", "renderer/**/*", "package.json"],
     "win": {
       "target": [{"target": "nsis", "arch": ["x64"]}],
       "artifactName": "Kadr-Setup-${version}.${ext}"
